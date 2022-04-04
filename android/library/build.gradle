@@ -1,7 +1,6 @@
 apply plugin: 'com.android.library'
 apply plugin: 'maven-publish'
 
-
 group='com.github.HelioGuilherme66'
 
 buildscript {
@@ -11,7 +10,7 @@ buildscript {
         mavenCentral()
     }
     dependencies {
-        classpath 'com.android.tools.build:gradle:7.0.4'
+        classpath 'com.android.tools.build:gradle:7.0.0'
     }
 }
 
@@ -22,14 +21,16 @@ repositories {
 }
 
 android {
-    compileSdkVersion 30
+    compileSdkVersion 31
 
     defaultConfig {
-        minSdkVersion 18
-        targetSdkVersion 30
+        minSdkVersion 21
+        targetSdkVersion 31
         versionCode 1
         versionName "1.0"
+		namespace 'com.polidea.multiplatformbleadapter'
     }
+	
     buildTypes {
         release {
             minifyEnabled false
@@ -38,6 +39,24 @@ android {
         profile {
             matchingFallbacks = ['debug', 'release']
         }
+    }
+
+	publishing {
+      publications {
+        release(MavenPublication) {
+          groupId = 'com.github.HelioGuilherme66'
+          artifactId = 'multiplatformbleadapter'
+          version = '1.0'
+
+          afterEvaluate {
+            from components.release
+          }
+        }
+       }
+    }
+
+	lintOptions {
+        abortOnError false
     }
 }
 
@@ -53,6 +72,7 @@ task sourcesJar(type: Jar) {
     classifier = 'sources'
     from android.sourceSets.main.java.sourceFiles
 }
+
 
 artifacts {
     archives sourcesJar
